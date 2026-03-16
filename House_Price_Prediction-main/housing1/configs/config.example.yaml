@@ -1,0 +1,52 @@
+# Example configuration for MLOps pipeline
+# Copy this file to config.yaml and customize
+
+project:
+  name: "House Price Prediction"
+  version: "1.0.0"
+  description: "MLOps pipeline for house price prediction"
+
+data:
+  raw_path: "data/raw/house_price.csv"
+  processed_path: "data/processed/"
+  test_size: 0.2
+  random_state: 42
+  validation_size: 0.2
+
+model:
+  type: "linear_regression"  # Options: linear_regression, random_forest, gradient_boosting
+  name: "house_price_model"
+  save_path: "models/"
+  metrics:
+    - "mae"
+    - "mse"
+    - "rmse"
+    - "r2"
+
+training:
+  max_iter: 1000
+  tolerance: 1e-4
+  early_stopping: true
+  patience: 10
+
+experiment:
+  tracking_uri: "mlruns"
+  experiment_name: "house_price_experiment"
+  log_models: true
+
+monitoring:
+  drift_threshold: 0.1
+  performance_threshold: 0.8
+  check_frequency: "daily"
+  alerts_email: "team@example.com"
+
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false  # Set to false in production
+  workers: 4
+
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"

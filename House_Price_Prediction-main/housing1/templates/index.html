@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="pattern-overlay"></div>
+    <div class="container">
+        <h1>🏠 House Price Prediction</h1>
+        
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <a href="/" class="{% if not show_visualizations and not show_dashboard %}active{% endif %}">🏠 Prediction</a>
+            <a href="/visualize" class="{% if show_visualizations %}active{% endif %}">📊 Visualizations</a>
+            <a href="/dashboard" class="{% if show_dashboard %}active{% endif %}">📈 Dashboard</a>
+        </div>
+        
+        {% if show_visualizations %}
+            <div class="visualization-section">
+                <h2>📊 Data Visualizations & Insights</h2>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Correlation Heatmap</div>
+                    <img src="data:image/png;base64,{{ correlation_img }}" class="chart-img" alt="Correlation Heatmap">
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Feature Distributions</div>
+                    <img src="data:image/png;base64,{{ distribution_img }}" class="chart-img" alt="Feature Distributions">
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Features vs Price Scatter Plots</div>
+                    <img src="data:image/png;base64,{{ scatter_img }}" class="chart-img" alt="Scatter Plots">
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Model Performance Analysis</div>
+                    <img src="data:image/png;base64,{{ perf_img }}" class="chart-img" alt="Model Performance">
+                </div>
+                
+                <h3>📊 Model Performance Metrics</h3>
+                <table class="metrics-table">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>🎯 R² Score</td>
+                        <td>{{ "%.3f"|format(metrics.r2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>📉 Mean Absolute Error</td>
+                        <td>Rs. {{ "%.2f"|format(metrics.mae) }}</td>
+                    </tr>
+                    <tr>
+                        <td>📊 Root Mean Square Error</td>
+                        <td>Rs. {{ "%.2f"|format(metrics.rmse) }}</td>
+                    </tr>
+                </table>
+                
+                <h3>🔍 Data Insights</h3>
+                <div class="chart-container">
+                    <p><strong>📋 Total Records:</strong> {{ insights.shape[0] }} | <strong>🔢 Total Features:</strong> {{ insights.shape[1] }}</p>
+                    <p><strong>💰 Price Range:</strong> Rs. {{ "%.2f"|format(insights.price_stats.min) }} - Rs. {{ "%.2f"|format(insights.price_stats.max) }}</p>
+                    <p><strong>📈 Average Price:</strong> Rs. {{ "%.2f"|format(insights.price_stats.mean) }}</p>
+                    <p><strong>📊 Numeric Features:</strong> {{ ', '.join(insights.numeric_columns) }}</p>
+                </div>
+            </div>
+        {% elif show_dashboard %}
+            <div class="dashboard-container">
+                <h2>📈 Interactive Dashboard</h2>
+                <div class="chart-container">
+                    {{ interactive_dashboard|safe }}
+                </div>
+            </div>
+        {% else %}
+            <div class="form-section">
+                <h2 style="color: white; margin-bottom: 25px; text-align: center;">Enter House Details</h2>
+                <form action="/predict" method="post">
+                    <div class="input-group">
+                        <label for="Area">📏 Area (sqft):</label>
+                        <input type="number" id="Area" name="Area" required placeholder="Enter house area in sqft">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Bedrooms">🛏️ Bedrooms:</label>
+                        <input type="number" id="Bedrooms" name="Bedrooms" required placeholder="Number of bedrooms">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Bathrooms">🚿 Bathrooms:</label>
+                        <input type="number" id="Bathrooms" name="Bathrooms" required placeholder="Number of bathrooms">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Stories">🏢 Stories:</label>
+                        <input type="number" id="Stories" name="Stories" required placeholder="Number of stories">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Parking">🚗 Parking Spaces:</label>
+                        <input type="number" id="Parking" name="Parking" required placeholder="Number of parking spaces">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Age">📅 Age of House (years):</label>
+                        <input type="number" id="Age" name="Age" required placeholder="Age of the house in years">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Location">📍 Location:</label>
+                        <select id="Location" name="Location" required>
+                            <option value="">Select location type</option>
+                            <option value="1">🏙️ City Center</option>
+                            <option value="2">🏘️ Suburban Area</option>
+                            <option value="3"> countryside Rural Area</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        🎯 Predict House Price
+                    </button>
+                </form>
+
+                <!-- DISPLAY RESULT -->
+                <div class="result">
+                    {% if prediction_text %}
+                        {{ prediction_text }}
+                    {% else %}
+                        💡 Enter house details and click "Predict House Price" to get an estimate
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <footer>
+            <p>Powered by Machine Learning | House Price Prediction App</p>
+        </footer>
+    </div>
+</body>
+</html>
