@@ -14,8 +14,12 @@ import os
 app = Flask(__name__)
 app.static_folder = 'static'
 
+# Get the directory where this file is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "Data", "house_price.csv")
+
 # Load dataset
-df = pd.read_csv("Data/house_price.csv")
+df = pd.read_csv(DATA_PATH)
 
 X = df.drop("Price", axis=1)
 y = df["Price"]

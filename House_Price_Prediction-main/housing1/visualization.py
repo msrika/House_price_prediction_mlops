@@ -23,7 +23,11 @@ warnings.filterwarnings('ignore')
 class DataVisualizer:
     """Class to handle data visualization for the house price prediction app"""
     
-    def __init__(self, data_path="Data/house_price.csv"):
+    def __init__(self, data_path=None):
+        if data_path is None:
+            import os
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+            data_path = os.path.join(BASE_DIR, "Data", "house_price.csv")
         self.data_path = data_path
         self.df = None
         self.model = None
