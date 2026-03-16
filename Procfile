@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:$PORT --workers 3 app:app
+web: streamlit run streamlit_app.py --server.port=$PORT --server.address=0.0.0.0
