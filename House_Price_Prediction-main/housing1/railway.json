@@ -3,6 +3,7 @@
     "builder": "heroku/buildpacks:20"
   },
   "deploy": {
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT --workers 3 app:app",
     "filesystem": {
       "files": [
         ".",

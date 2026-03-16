@@ -1,0 +1,20 @@
+# Core dependencies
+flask>=2.3.0
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+scipy>=1.11.0
+pyyaml>=6.0
+click>=8.1.0
+joblib>=1.3.0
+
+# Visualization libraries
+matplotlib>=3.5.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# Monitoring and logging
+prometheus-client>=0.17.0
+
+# API production server
+gunicorn>=21.2.0
