@@ -1,14 +1,20 @@
 import os
 import sys
 
-# Add the housing1 directory to the path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'House_Price_Prediction-main', 'housing1'))
+# Get the absolute path to the housing1 directory
+housing1_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'House_Price_Prediction-main', 'housing1')
 
-# Change to the housing1 directory for relative paths
-os.chdir(os.path.join(os.path.dirname(__file__), 'House_Price_Prediction-main', 'housing1'))
+# Add to Python path for imports
+sys.path.insert(0, housing1_path)
 
-# Import the actual app
-from app import app
+# Change working directory for relative file paths
+os.chdir(housing1_path)
+
+# Import the Flask app
+from app import app as application
+
+# Expose app for gunicorn
+app = application
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
